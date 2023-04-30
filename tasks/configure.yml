@@ -14,15 +14,6 @@
         name: python3-pip
         state: present
 
-    - name: Install pip dependencies
-      become: true
-      ansible.builtin.pip:
-        name: "{{ item }}"
-        state: present
-      loop:
-        - lxml
-        - jmespath
-
     - name: Read device ID from Syncthing config
       become: true
       become_user: "{{ syncthing_user }}"
@@ -31,6 +22,13 @@
         xpath: /configuration/device
         content: attribute
       register: device_id
+      when: syncthing_device_id is undefined
+
+    - name: Set device ID
+      set_fact:
+        device_id: "{{ syncthing_device_id }}"
+        syncthing_device_id: "{{ syncthing_device_id }}"
+      when: syncthing_device_id is defined
 
     - debug:
         var: device_id
@@ -48,6 +46,7 @@
         syncthing_device_id: "{{ device_id | community.general.json_query(query_device_id) | first }}"
       vars:
         query_device_id: "matches[?device.name==`{{ syncthing_device_name }}`].device.id"
+      when: syncthing_device_id is undefined
 
     - name: Set syncthing_devices dictionary
       ansible.builtin.set_fact:

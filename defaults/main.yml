@@ -5,16 +5,19 @@ syncthing_url: https://github.com/syncthing/syncthing/releases/download/{{ synct
 
 syncthing_user: "{{ ansible_user_id }}"
 syncthing_install_user: true
-syncthing_hosts: "{{ ansible_play_hosts_all }}" # List of Ansible inventory hosts in this play to configure as Syncthing peers  
+syncthing_hosts: "{{ ansible_play_hosts_all }}" # List of Ansible inventory hosts in this play to configure as Syncthing peers
 syncthing_configure: true
 syncthing_configure_firewall: true
 syncthing_bootstrap_only: false
+#syncthing_device_id: ""
 
 ### SYNCTHING OPTIONS
 syncthing_gui_enabled: "true"
 syncthing_gui_address: "127.0.0.1:8384"
 syncthing_gui_apikey: ""
 syncthing_gui_theme: "default"
+syncthing_gui_user: ""
+syncthing_gui_password: ""
 
 ## SYNCTHING DEFAULTS
 syncthing_device_defaults:
